@@ -59,7 +59,7 @@ if (certificateGallery instanceof HTMLElement) {
     details.className = "certificate-details";
 
     const issuer = document.createElement("p");
-    issuer.className = "project-status";
+    issuer.className = "certificate-issuer";
     issuer.textContent = certificate.issuer;
 
     const title = document.createElement("h3");
@@ -1572,7 +1572,7 @@ if (ringFieldTargets.length) {
 
 const staggerMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 const staggerTargetSelector =
-  "h1, h2, .hero-kicker, .hero-greeting, .section-body > .eyebrow, .timeline-item h3, .skill-card h3, .project-info h3, .certificate-details h3, .contact-info-card strong, .bio-list dd, .education-facts dd";
+  "h1, h2, .hero-kicker, .hero-greeting, .section-body > .eyebrow, .timeline-item h3, .skill-card h3, .certificate-details h3, .contact-info-card strong, .bio-list dd, .education-facts dd";
 const staggerObserver = !staggerMotion.matches && "IntersectionObserver" in window
   ? new IntersectionObserver((entries, observer) => {
     entries.forEach((entry) => {
@@ -1679,7 +1679,7 @@ if ("IntersectionObserver" in window) {
       }
 
       entry.target.querySelectorAll(
-        "p:not(.eyebrow):not(.section-number):not(.project-status):not(.timeline-date):not(.timeline-program):not(.hero-greeting):not(.hero-location):not(.visually-hidden):not(.hero-profession-line):not(.form-status)"
+        "p:not(.eyebrow):not(.section-number):not(.certificate-issuer):not(.timeline-date):not(.timeline-program):not(.hero-greeting):not(.hero-location):not(.visually-hidden):not(.hero-profession-line):not(.form-status)"
       ).forEach(typeParagraph);
       observer.unobserve(entry.target);
     });
@@ -1746,63 +1746,6 @@ if (certificateDialog instanceof HTMLDialogElement) {
   certificateDialog.addEventListener("click", (event) => {
     if (event.target === certificateDialog) {
       certificateDialog.close();
-    }
-  });
-}
-
-const projectDialog = document.querySelector("#project-dialog");
-if (projectDialog instanceof HTMLDialogElement) {
-  const projectOpen = document.querySelector("[data-project-open]");
-  const projectClose = projectDialog.querySelector("[data-project-close]");
-  let projectCloseTimer;
-  const finishProjectDialogClose = () => {
-    if (projectDialog.open && projectDialog.classList.contains("is-closing")) {
-      projectDialog.close();
-      projectDialog.classList.remove("is-closing");
-    }
-  };
-  const closeProjectDialog = () => {
-    if (!projectDialog.open) {
-      return;
-    }
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      projectDialog.close();
-      return;
-    }
-    if (projectDialog.classList.contains("is-closing")) {
-      return;
-    }
-    projectDialog.classList.add("is-closing");
-    projectCloseTimer = window.setTimeout(finishProjectDialogClose, 200);
-  };
-
-  if (projectOpen instanceof HTMLButtonElement) {
-    projectOpen.addEventListener("click", () => {
-      projectDialog.classList.remove("is-closing");
-      projectDialog.showModal();
-    });
-  }
-
-  projectClose?.addEventListener("click", closeProjectDialog);
-  projectDialog.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") {
-      event.preventDefault();
-      closeProjectDialog();
-    }
-  });
-  projectDialog.addEventListener("animationend", (event) => {
-    if (event.target === projectDialog && event.animationName === "project-dialog-exit") {
-      window.clearTimeout(projectCloseTimer);
-      finishProjectDialogClose();
-    }
-  });
-  projectDialog.addEventListener("cancel", (event) => {
-    event.preventDefault();
-    closeProjectDialog();
-  });
-  projectDialog.addEventListener("click", (event) => {
-    if (event.target === projectDialog) {
-      closeProjectDialog();
     }
   });
 }
